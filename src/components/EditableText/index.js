@@ -5,18 +5,24 @@ class EditableText extends Component {
   state = {
     saveState: true,
     inputValue: '',
+    savedData: '',
   }
 
-  enterInputValue = event => {
-    const {inputValue} = event.target.value
-    this.setState(prevState => ({
-      saveState: !prevState.saveState,
-      inputValue,
-    }))
+  handleInput = event => {
+    this.setState({inputValue: event.target.value})
+  }
+
+  saveData = () => {
+    const {inputValue} = this.state
+    this.setState({saveState: false, savedData: inputValue})
+  }
+
+  editData = () => {
+    this.setState({saveState: true})
   }
 
   render() {
-    const {saveState, inputValue} = this.state
+    const {saveState, inputValue, savedData} = this.state
 
     return (
       <>
@@ -25,19 +31,28 @@ class EditableText extends Component {
             <h1>Editable Text Input</h1>
             {saveState ? (
               <div className="input-details">
-                <input type="text" className="input" />
+                <input
+                  type="text"
+                  className="input"
+                  value={inputValue}
+                  onChange={this.handleInput}
+                />
                 <button
                   type="button"
-                  className="save-btn"
-                  onClick={this.enterInputValue}
+                  className="click-btn"
+                  onClick={this.saveData}
                 >
                   Save
                 </button>
               </div>
             ) : (
-              <div>
-                <p>{inputValue}</p>
-                <button type="button" onClick={this.enterInputValue}>
+              <div className="input-details">
+                <p className="saved-data">{savedData}</p>
+                <button
+                  type="button"
+                  className="click-btn"
+                  onClick={this.editData}
+                >
                   Edit
                 </button>
               </div>
